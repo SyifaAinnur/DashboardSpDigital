@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="font-base">
     <!-- <NuxtWelcome /> -->
     <h1 class="text-3xl font-bold underline">
     Hello world!
