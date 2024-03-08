@@ -1,7 +1,7 @@
 <template>
     <li>
       <a :href="link" :class="linkClasses">
-        <span v-html="icon" class="mr-3"></span> <!-- Menggunakan v-html untuk menyisipkan ikon -->
+        <span v-html="icon" class="mr-3"></span>
         <span>{{ label }}</span>
       </a>
     </li>

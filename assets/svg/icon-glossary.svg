@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_741a8a99-f530-48ee-9ad8-69d0566ae937" data-name="741a8a99-f530-48ee-9ad8-69d0566ae937" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-2 {
+        stroke: #d1e231;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 3px;
+      }
+
+      .cls-3 {
+        fill: #d1e231;
+      }
+
+      .cls-4 {
+        fill: #2d2e83;
+      }
+    </style>
+  </defs>
+  <rect class="cls-3" x="25.02" y="4.1" width="10.88" height="14.82"/>
+  <rect class="cls-1" width="48" height="48"/>
+  <path class="cls-4" d="m9.57,22v-8m0,20v-8m0-15.94v-2c0-2.21,1.79-4,4-4h12v14l5-3,5,3V4.1h2c2.18.07,3.93,1.82,4,4v31.9c-.07,2.18-1.82,3.93-4,4H13.56c-2.18-.08-3.92-1.82-4-4v-2m.01-16v4m0-15.94v4m0,19.94v4"/>
+  <line class="cls-2" x1="6.24" y1="12.07" x2="12.91" y2="12.07"/>
+  <line class="cls-2" x1="6.24" y1="24.03" x2="12.91" y2="24.03"/>
+  <line class="cls-2" x1="6.24" y1="35.79" x2="12.91" y2="35.79"/>
+</svg>
