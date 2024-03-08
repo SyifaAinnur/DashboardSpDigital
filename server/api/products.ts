@@ -3,11 +3,15 @@ import { faker } from '@faker-js/faker';
 export default defineEventHandler((event) => {
     const products: any = []
 
-    function generateUser() {
-        return {
+    function generateUsers() {
+        const users = [];
+        for (let i = 0; i < 5; i++) {
+          users.push({
             avatar: faker.image.avatar()
+          });
         }
-    }
+        return users;
+      }
 
     function generateRandomNumber() {
         // max 10
@@ -29,7 +33,7 @@ export default defineEventHandler((event) => {
             status: generateStatus(),
             usage: generateRandomNumber(),
             imageURL: faker.image.urlPicsumPhotos({ width: 900, height: 600 }),
-            user: generateUser(),
+            user: generateUsers(),
             adjective: faker.commerce.productAdjective(),
             description: faker.commerce.productDescription()
 

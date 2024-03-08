@@ -2,16 +2,21 @@
 import Tables from '~/components/Tables.vue';
 const { data: products } = await useFetch('/api/products')
 
-console.log(products)
+// console.log(products)
+
+console.log(products.value[0].user)
+
+
 
 const tableData = ref(products)
 const tableColumns = ref([
     { label: "Checkbox", type: "checkbox", className: "p-4" },
-    { label: "Company", type: "text", className: "px-6 py-3" },
-    { label: "License Use", type: "text", className: "px-6 py-3" },
-    { label: "Status", type: "text", className: "px-6 py-3" },
-    { label: "Price", type: "text", className: "px-6 py-3" },
-    { label: "Action", type: "text", className: "px-6 py-3" }
+    { label: "Company", type: "text", className: "px-8 py-3" },
+    { label: "License Use", type: "text", className: "px-8 py-3" },
+    { label: "Status", type: "text", className: "px-8 py-3" },
+    { label: "Users", type: "text", className: "px-8 py-3" },
+    { label: "About", type: "text", className: "px-8 py-3" },
+    { label: "", type: "text", className: "px-8 py-3" }
 ])
 
 
