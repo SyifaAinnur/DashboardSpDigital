@@ -98,6 +98,20 @@ export default defineComponent({
                     icon='<svg class="h-6 w-6 text-white-800 dark:text-white"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />  <circle cx="12" cy="7" r="4" /></svg>' />
 
             </ul>
+            <div class="mt-auto absolute bottom-10 w-5/6">
+                <hr class="h-px my-8 bg-gray-800 border-0 dark:bg-gray-700">
+                <div class="flex items-center space-x-2 px-2 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <div class="flex items-center">
+                            <div class="flex-shrink-0 w-10 h-10">
+                                <img class="w-10 h-10 rounded-full" src="https://picsum.photos/seed/KqtXkWfuA/900/600" alt="">
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-100 dark:text-black hover:text-black">Administrator</div>
+                                <div class="text-sm text-gray-500 dark:text-gray-400">admin@spdigital.com</div>
+                            </div>
+                        </div>
+                </div>
+            </div>
         </div>
     </aside>
 </template>

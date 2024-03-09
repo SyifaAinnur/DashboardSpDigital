@@ -23,7 +23,6 @@
                 </template>
 
             </Card>
-            <MoleculeDropdown v-if="showDropdown" />
             <Card label="Total Order" data="400 Orders">
                 <template v-slot:icon>
                     <Icon name="twemoji:bookmark" size="32" color="#AAB8C2" />
