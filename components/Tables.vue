@@ -26,7 +26,8 @@
                     <th v-for="(column, index) in columns" :key="index" :class="column.className">
                         <div v-if="column.type === 'checkbox'" class="flex items-center">
                             <input :id="'checkbox-all-' + index" type="checkbox"
-                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                @click="selectAll($event)">
                             <label :for="'checkbox-all-' + index" class="sr-only">checkbox</label>
                         </div>
                         <div v-else class="flex">{{ column.label }}
@@ -46,7 +47,8 @@
                     <td class="w-4 p-4">
                         <div class="flex items-center">
                             <input :id="'checkbox-table-search-' + index" type="checkbox"
-                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                class="w-4 h-4 text-black-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                @click="toggleItemSelection(item)">
                             <label :for="'checkbox-table-search-' + index" class="sr-only">checkbox</label>
                         </div>
                     </td>
@@ -94,7 +96,7 @@
                             <Icon name="ic:outline-delete" size="32" color="#000" />
                             <!-- Edit -->
                             <Icon name="material-symbols-light:edit-outline" size="32" color="#000" />
-                            
+
                         </div>
                     </td>
 
@@ -129,6 +131,11 @@
 </template>
 
 <script>
+
+import { useToast } from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
+
+const toast = useToast();
 export default {
     props: {
         items: {
@@ -146,7 +153,8 @@ export default {
             itemsPerPage: 5,
             searchQuery: '',
             sortColumn: '',
-            sortDirection: 'asc'
+            sortDirection: 'asc',
+            selectedCount: 0
         };
     },
     computed: {
@@ -174,24 +182,6 @@ export default {
         displayedItems() {
             return this.sortedItems.slice(this.startIndex, this.endIndex);
         },
-
-        // sortedItems() {
-        //     if (!this.sortColumn) return this.filteredItems;
-
-        //     return this.filteredItems.slice().sort((a, b) => {
-        //         const aValue = a[this.sortColumn];
-        //         const bValue = b[this.sortColumn];
-
-        //         console.log(aValue, bValue);
-
-        //         if (this.sortDirection === 'asc') {
-        //             return aValue > bValue ? 1 : -1;
-        //         } else {
-        //             return aValue < bValue ? 1 : -1;
-        //         }
-        //     });
-        // }
-
         sortedItems() {
             if (!this.sortColumn || this.sortColumn === 'checkbox') return this.filteredItems;
 
@@ -200,9 +190,9 @@ export default {
                 const bValue = this.getColumnValue(b, this.sortColumn);
 
                 if (this.sortDirection === 'asc') {
-                    return aValue.localeCompare(bValue, undefined, {numeric: true});
+                    return aValue.localeCompare(bValue, undefined, { numeric: true });
                 } else {
-                    return bValue.localeCompare(aValue, undefined, {numeric: true});
+                    return bValue.localeCompare(aValue, undefined, { numeric: true });
                 }
             });
         }
@@ -238,7 +228,28 @@ export default {
                 default:
                     return '';
             }
+        },
+        toggleItemSelection(item) {
+            item.isSelected = !item.isSelected;
+            this.updateSelectedCount();
+            this.showToast();
+        },
+        selectAll(event) {
+            const allSelected = event.target.checked;
+            this.filteredItems.forEach(item => {
+                item.isSelected = allSelected;
+            });
+            this.updateSelectedCount();
+        },
+        updateSelectedCount() {
+            this.selectedCount = this.filteredItems.reduce((acc, item) => {
+                return item.isSelected ? acc + 1 : acc;
+            }, 0);
+        },
+        showToast() {
+            toast.success(`Item selected ${this.selectedCount}`);
         }
     }
 };
+
 </script>
