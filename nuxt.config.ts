@@ -9,5 +9,9 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  sweetalert: {
+    confirmButtonColor: '#41b882',
+    cancelButtonColor: '#ff7674'
+  }
 })
 
