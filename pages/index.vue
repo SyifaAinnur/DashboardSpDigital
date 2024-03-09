@@ -2,7 +2,7 @@
 import Tables from '~/components/Tables.vue';
 const { data: products } = await useFetch('/api/products')
 
-console.log(products.value[0].user)
+// console.log(products.value[0].user)
 
 const tableData = ref(products)
 const tableColumns = ref([
@@ -51,5 +51,6 @@ const tableColumns = ref([
         </div>
 
         <Tables :items="tableData" :columns="tableColumns" />
+
     </div>
 </template>

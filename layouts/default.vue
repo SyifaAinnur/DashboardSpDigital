@@ -6,7 +6,7 @@ import Sidebar from '~/components/Sidebar.vue'
 </script>
 
 <template>
-    <div class="bg-[#101828] font-base">
+    <div class="font-base bg-[#101828]">
         <sidebar />
         <div class="pt-10">
 

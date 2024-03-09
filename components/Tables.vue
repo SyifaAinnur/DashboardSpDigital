@@ -18,7 +18,8 @@
     </div>
     <div class="relative overflow-x-auto shadow-xl sm:rounded-lg">
         <!-- Table -->
-        <table class="w-max md:w-max lg:w-max xl:w-screen text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <table
+            class="w-max md:w-max lg:w-max xl:w-screen text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <!-- Table header -->
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -28,7 +29,13 @@
                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                             <label :for="'checkbox-all-' + index" class="sr-only">checkbox</label>
                         </div>
-                        <span v-else>{{ column.label }}</span>
+                        <div v-else class="flex">{{ column.label }}
+                            <!-- Sort icon -->
+                            <a href="#" @click.prevent="toggleSort(column.type)">
+                                <Icon name="iconoir:data-transfer-both" size="20" color="#AAB8C2" />
+                            </a>
+
+                        </div>
                     </th>
                 </tr>
             </thead>
@@ -43,7 +50,6 @@
                             <label :for="'checkbox-table-search-' + index" class="sr-only">checkbox</label>
                         </div>
                     </td>
-                    <!-- <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ item.name }}</th> -->
                     <td class="px-6 py-4">
                         <div class="flex items-center">
                             <div class="flex-shrink-0 w-10 h-10">
@@ -84,26 +90,11 @@
                     </td>
                     <td class="px-6 py-4 text-right whitespace-nowrap">
                         <div class="flex">
-                            <svg class="w-6 h-6 mr-2 text-gray-800 dark:text-white" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                            </svg>
-
-
-                            <!-- <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="m10.8 17.8-6.4 2.1 2.1-6.4m4.3 4.3L19 9a3 3 0 0 0-4-4l-8.4 8.6m4.3 4.3-4.3-4.3m2.1 2.1L15 9.1m-2.1-2 4.2 4.2" />
-                            </svg> -->
-
-                            <svg class="h-6 w-6 text-shades-800" <svg width="24" height="24" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
-                            </svg>
+                            <!-- Delete -->
+                            <Icon name="ic:outline-delete" size="32" color="#000" />
+                            <!-- Edit -->
+                            <Icon name="material-symbols-light:edit-outline" size="32" color="#000" />
+                            
                         </div>
                     </td>
 
@@ -153,7 +144,9 @@ export default {
         return {
             currentPage: 1,
             itemsPerPage: 5,
-            searchQuery: ''
+            searchQuery: '',
+            sortColumn: '',
+            sortDirection: 'asc'
         };
     },
     computed: {
@@ -174,8 +167,44 @@ export default {
         endIndex() {
             return Math.min(this.startIndex + this.itemsPerPage, this.totalItems);
         },
+        // displayedItems() {
+        //     return this.filteredItems.slice(this.startIndex, this.endIndex);
+        // }
+
         displayedItems() {
-            return this.filteredItems.slice(this.startIndex, this.endIndex);
+            return this.sortedItems.slice(this.startIndex, this.endIndex);
+        },
+
+        // sortedItems() {
+        //     if (!this.sortColumn) return this.filteredItems;
+
+        //     return this.filteredItems.slice().sort((a, b) => {
+        //         const aValue = a[this.sortColumn];
+        //         const bValue = b[this.sortColumn];
+
+        //         console.log(aValue, bValue);
+
+        //         if (this.sortDirection === 'asc') {
+        //             return aValue > bValue ? 1 : -1;
+        //         } else {
+        //             return aValue < bValue ? 1 : -1;
+        //         }
+        //     });
+        // }
+
+        sortedItems() {
+            if (!this.sortColumn || this.sortColumn === 'checkbox') return this.filteredItems;
+
+            return this.filteredItems.slice().sort((a, b) => {
+                const aValue = this.getColumnValue(a, this.sortColumn);
+                const bValue = this.getColumnValue(b, this.sortColumn);
+
+                if (this.sortDirection === 'asc') {
+                    return aValue.localeCompare(bValue, undefined, {numeric: true});
+                } else {
+                    return bValue.localeCompare(aValue, undefined, {numeric: true});
+                }
+            });
         }
     },
     methods: {
@@ -190,6 +219,24 @@ export default {
         nextPage() {
             if (this.currentPage < this.totalPages) {
                 this.currentPage++;
+            }
+        },
+        toggleSort(type) {
+            if (this.sortColumn === type) {
+                this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                this.sortColumn = type;
+                this.sortDirection = 'asc';
+            }
+        },
+        getColumnValue(item, type) {
+            switch (type) {
+                case 'text':
+                    return item.name;
+                case 'checkbox':
+                    return '';
+                default:
+                    return '';
             }
         }
     }
